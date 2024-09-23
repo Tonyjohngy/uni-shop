@@ -3,30 +3,30 @@
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
       <swiper-item v-for="(item,index) in swiperList" :key="index">
         <navigator :url="`/subpkg/goods_detail/goods_detail?id=${item.goods_id}`" class="swiper-item">
-          <img :src="item.image_src" />
+          <image :src="item.image_src" />
         </navigator>
       </swiper-item>
     </swiper>
     <view class="nav-list">
       <view class="nav-item" v-for="(item ,index) in navList" :key="index" @click="navClickHandler(item)">
-        <img class="nav-img" :src="item.image_src" />
+        <image class="nav-img" :src="item.image_src" />
       </view>
     </view>
     <view class="floor-list">
       <view v-for=" (item,index) in floorLsit" :key="index" class="floor-item">
         <view class="floor-title">
-          <img :src="item.floor_title.image_src" mode="widthFix" />
+          <image :src="item.floor_title.image_src" mode="widthFix" />
         </view>
         <view class="floor-product">
           <view class="left-product-box">
             <view class="left-product-item">
-              <img :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}"
+              <image :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}"
                 mode="widthFix" alt="" />
             </view>
           </view>
           <view class="right-product-box">
             <view class="right-product-item" v-for=" (pItem,i) in item.product_list" :key="i" v-if="i!==0">
-              <img :src="pItem.image_src" :style="{width: pItem.image_width + 'rpx'}" mode="widthFix" />
+              <image :src="pItem.image_src" :style="{width: pItem.image_width + 'rpx'}" mode="widthFix" />
             </view>
           </view>
         </view>
@@ -81,7 +81,7 @@
         const {
           data: res
         } = await uni.$http.get('/api/public/v1/home/floordata')
-        if (res.meta.status !== 200) return uni.$showMsg()
+        if (res.meta.status !== 200) return uni.$showMsg('楼层列表获取失败', 1500)
         this.floorLsit = res.message
         console.log(this.floorLsit);
       },
