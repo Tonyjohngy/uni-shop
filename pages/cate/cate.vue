@@ -1,29 +1,32 @@
 <template>
-  <view class="scroll-view-container">
-
-    <scroll-view class="left-sroll-view" scroll-y="true" :style="{height: wh+'px'}">
-      <!-- block 单纯的包裹作用 没有渲染作用-->
-      <view v-for="(item,index) in cateList" :key="index" @click="changeActive(index)"
-        :class="['left-sroll-item', index===active ? 'active' :'']">
-        {{item.cat_name}}
-      </view>
-    </scroll-view>
-
-    <scroll-view class="right-sroll-view" scroll-y="true" :style="{height: wh + 'px'}" :scroll-top="scrollTap">
-      <view class="item-lv2-list" v-for="(item2 ,index2) in cateLevelTwo" :key="index2">
-        <view class="item-lv2-item">
-          {{item2.cat_name}}
+  <view>
+    <my-search></my-search>
+    <view class="scroll-view-container">
+      <scroll-view class="left-sroll-view" scroll-y="true" :style="{height: wh+'px'}">
+        <!-- block 单纯的包裹作用 没有渲染作用-->
+        <view v-for="(item,index) in cateList" :key="index" @click="changeActive(index)"
+          :class="['left-sroll-item', index===active ? 'active' :'']">
+          {{item.cat_name}}
         </view>
-        <view class="item-lv3-list">
-          <view class="item-lv3-item" v-for="(item3 ,index3) in item2.children" :key="index3"
-            @click="goToGoodsList(item3)">
-            <image style="width: 60px; height: 60px;" :src="item3.cat_icon"></image>
-            <text>{{ item3.cat_name }}</text>
+      </scroll-view>
+
+      <scroll-view class="right-sroll-view" scroll-y="true" :style="{height: wh + 'px'}" :scroll-top="scrollTap">
+        <view class="item-lv2-list" v-for="(item2 ,index2) in cateLevelTwo" :key="index2">
+          <view class="item-lv2-item">
+            {{item2.cat_name}}
+          </view>
+          <view class="item-lv3-list">
+            <view class="item-lv3-item" v-for="(item3 ,index3) in item2.children" :key="index3"
+              @click="goToGoodsList(item3)">
+              <image style="width: 60px; height: 60px;" :src="item3.cat_icon"></image>
+              <text>{{ item3.cat_name }}</text>
+            </view>
           </view>
         </view>
-      </view>
-    </scroll-view>
+      </scroll-view>
+    </view>
   </view>
+
 </template>
 
 <script>
@@ -39,7 +42,7 @@
     },
     onLoad() {
       const sysInfo = uni.getSystemInfoSync()
-      this.wh = sysInfo.windowHeight
+      this.wh = sysInfo.windowHeight - 50
       this.getCateList()
     },
     methods: {

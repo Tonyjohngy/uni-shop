@@ -1,6 +1,6 @@
 <template>
   <view>
-    goodsde
+    list
   </view>
 </template>
 
@@ -9,11 +9,14 @@
     data() {
       return {
 
-      };
+      }
+    },
+    methods: {
+
     }
   }
 </script>
 
-<style lang="scss">
+<style>
 
 </style>

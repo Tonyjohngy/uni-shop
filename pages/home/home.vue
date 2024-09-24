@@ -1,5 +1,11 @@
 <template>
   <view>
+    <!-- <my-search :bgc="'black'"></my-search> -->
+    <!-- 搜索组件 -->
+    <view class="search-box">
+      <my-search @click="goToSearch()"></my-search>
+    </view>
+    <!-- 轮播图模块 -->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
       <swiper-item v-for="(item,index) in swiperList" :key="index">
         <navigator :url="`/subpkg/goods_detail/goods_detail?id=${item.goods_id}`" class="swiper-item">
@@ -7,11 +13,13 @@
         </navigator>
       </swiper-item>
     </swiper>
+    <!-- 导航模块 -->
     <view class="nav-list">
       <view class="nav-item" v-for="(item ,index) in navList" :key="index" @click="navClickHandler(item)">
         <image class="nav-img" :src="item.image_src" />
       </view>
     </view>
+    <!-- 楼层模块 -->
     <view class="floor-list">
       <view v-for=" (item,index) in floorLsit" :key="index" class="floor-item">
         <view class="floor-title">
@@ -51,7 +59,9 @@
     onLoad() {
       // 获取轮播图的数据列表
       this.getSwiperList()
+      // 获取导航列表
       this.getNavList()
+      // 获取楼层列表
       this.getFloorList()
     },
     methods: {
@@ -63,6 +73,7 @@
         if (res.meta.status !== 200) return uni.$showMsg()
         this.swiperList = res.message
       },
+      // 获取导航列表
       async getNavList() {
         const {
           data: res
@@ -70,6 +81,7 @@
         if (res.meta.status !== 200) return uni.$showMsg('分类导航列表获取失败', 1500)
         this.navList = res.message
       },
+      // 分类导航跳转
       navClickHandler(item) {
         if (item.name === '分类') {
           uni.switchTab({
@@ -77,6 +89,7 @@
           })
         }
       },
+      // 获取楼层列表
       async getFloorList() {
         const {
           data: res
@@ -85,11 +98,25 @@
         this.floorLsit = res.message
         console.log(this.floorLsit);
       },
+      // 搜索组件跳转
+      goToSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search'
+        })
+      }
     }
   }
 </script>
 
 <style lang="scss">
+  // 搜索拦实现吸顶效果
+  .search-box {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  // 轮播图样式
   swiper {
     height: 330rpx;
 
@@ -100,6 +127,7 @@
     }
   }
 
+  // 分类导航样式
   .nav-list {
     display: flex;
     justify-content: space-around;
@@ -111,6 +139,7 @@
     }
   }
 
+  // 楼层样式
   .floor-product {
     display: flex;
 
