@@ -6,7 +6,7 @@
       </uni-search-bar>
     </view>
     <view class="sugg-list" v-if="keyword.length !== 0">
-      <view class="sugg-item" v-for="(item,index) in searchResults" :key="index" @click="goToDetail(item)">
+      <view class="sugg-item" v-for="(item,index) in searchResults" :key="index" @click="goToList(item)">
         <view class="sugg-name">{{ item.goods_name }}</view>
         <uni-icons type="right" size="16px"></uni-icons>
       </view>
@@ -36,11 +36,11 @@
         // 搜索列表
         searchResults: [],
         // 历史记录
-        historyList: ['adqw']
+        historyList: []
       }
     },
     onLoad() {
-      this.historyList = JSON.parse(uni.getStorageSync('kw') || [])
+      this.historyList = JSON.parse(uni.getStorageSync('kw') || '[]')
     },
     methods: {
       // 获取输入数据，并做防抖操作
@@ -67,9 +67,9 @@
         this.getHistoryList()
       },
       // 跳转详情页
-      goToDetail(item) {
+      goToList(item) {
         uni.navigateTo({
-          url: `/subpkg/goods_detail/goods_detail?id=${item.goods_id}`,
+          url: `/subpkg/goods_list/goods_list?query=${item.goods_name}`,
         });
       },
       // 新的搜索词加入记录列表

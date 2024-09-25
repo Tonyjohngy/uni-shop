@@ -27,15 +27,16 @@
         </view>
         <view class="floor-product">
           <view class="left-product-box">
-            <view class="left-product-item">
+            <navigator class="left-product-item" :url="item.product_list[0].url">
               <image :src="item.product_list[0].image_src" :style="{width: item.product_list[0].image_width + 'rpx'}"
                 mode="widthFix" alt="" />
-            </view>
+            </navigator>
           </view>
           <view class="right-product-box">
-            <view class="right-product-item" v-for=" (pItem,i) in item.product_list" :key="i" v-if="i!==0">
+            <navigator class="right-product-item" v-for=" (pItem,i) in item.product_list" :key="i" v-if="i!==0"
+              :url="pItem.url">
               <image :src="pItem.image_src" :style="{width: pItem.image_width + 'rpx'}" mode="widthFix" />
-            </view>
+            </navigator>
           </view>
         </view>
       </view>
@@ -95,8 +96,13 @@
           data: res
         } = await uni.$http.get('/api/public/v1/home/floordata')
         if (res.meta.status !== 200) return uni.$showMsg('楼层列表获取失败', 1500)
+
+        this.floorLsit = res.message.forEach(floor => {
+          floor.product_list.forEach(prod => {
+            prod.url = '/subpkg/goods_list/goods_list?' + prod.navigator_url.split('?')[1]
+          })
+        })
         this.floorLsit = res.message
-        console.log(this.floorLsit);
       },
       // 搜索组件跳转
       goToSearch() {
