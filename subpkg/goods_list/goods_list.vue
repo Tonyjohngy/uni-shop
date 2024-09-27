@@ -2,7 +2,9 @@
   <view>
     <view class="goods-container">
       <block v-for="(item,index) in goodsList" :key="index">
-        <my-goods :item=item></my-goods>
+        <view @click="goToDetail(item)">
+          <my-goods :item=item></my-goods>
+        </view>
       </block>
     </view>
   </view>
@@ -45,6 +47,11 @@
         cd && cd()
         this.isLoading = false
       },
+      goToDetail(item) {
+        uni.navigateTo({
+          url: `/subpkg/goods_detail/goods_detail?goods_id=${item.goods_id}`,
+        });
+      },
     },
     //下拉触底刷新
     onReachBottom() {
@@ -59,7 +66,8 @@
       this.goodsList = []
       this.total = 0
       this.getGoodsList(() => uni.stopPullDownRefresh())
-    }
+    },
+
   }
 </script>
 

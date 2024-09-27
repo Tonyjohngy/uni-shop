@@ -65,6 +65,7 @@
         if (res.meta.status !== 200) return uni.$showMsg('搜索请求失败！', 1500)
         this.searchResults = res.message.goods
         this.getHistoryList()
+        console.log(this.historyList);
       },
       // 跳转详情页
       goToList(item) {
@@ -88,7 +89,7 @@
       },
       goToTag(item) {
         uni.navigateTo({
-          url: `/subpkg/goods_detail/goods_detail?id=${item.goods_id}`
+          url: `/subpkg/goods_list/goods_list?query=${item}`
         })
       }
     },
