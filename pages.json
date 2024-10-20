@@ -1,4 +1,8 @@
+// 配置页面路径、tarBar、navigationBar、窗口信息和样式等信息
+// tarBar 用于底部或则核定不得选项卡
+// navigationBar  用于顶部实现导航栏，比如标题返回键等
 {
+  // tarBar路由信息
   "pages": [{
       "path": "pages/home/home",
       "style": {
@@ -28,12 +32,16 @@
       }
     }
   ],
+  // 独立子包 减小小程序的大小，需要的时候才下载子包的内容
   "subPackages": [{
     "root": "subpkg",
-    "pages": [{
+    "pages": [
+      // 商品详情页
+      {
         "path": "goods_detail/goods_detail",
         "style": {}
       },
+      // 商品列表
       {
         "path": "goods_list/goods_list",
         "style": {
@@ -43,6 +51,7 @@
           "backgroundColor": "#f8f8f8"
         }
       },
+      // 搜索页面
       {
         "path": "search/search",
         "style": {
@@ -51,6 +60,7 @@
       }
     ]
   }],
+  // 全局页面样式配置
   "globalStyle": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "购物平台",
@@ -60,6 +70,7 @@
     //   "background": "#efeff4"
     // }
   },
+  // tarBar配置
   "tabBar": {
     "selectedColor": "#C00000",
     "list": [{

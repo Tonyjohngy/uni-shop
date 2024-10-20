@@ -19,13 +19,19 @@
       <view class="goods-pic">
       </view>
     </view>
-
+    <!--rich-text  -->
     <rich-text :nodes="goodsDetail.goods_introduce"></rich-text>
 
+    <!-- uni-goods-nav  商品导航组件 
+    fill: 是否填充整个宽度，设置为 true 或 false。
+    options: 左侧选项的配置数组，每个选项包含 icon 和 text 属性。
+    buttonGroup: 右侧按钮组的配置数组，每个按钮包含 text、backgroundColor 和 color 属性。
+    @click: 点击左侧选项时的回调函数，参数 e 包含点击的选项信息。
+    @buttonClick: 点击右侧按钮时的回调函数，参数 e 包含点击的按钮信息。
+    -->
     <view class="goods_nav">
       <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick"
-        @buttonClick="buttonClick" <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup"
-        @click="onClick" @buttonClick="buttonClick" />
+        @buttonClick="buttonClick" />
     </view>
   </view>
 </template>
@@ -39,7 +45,9 @@
   export default {
     data() {
       return {
+        // 商品详情
         goodsDetail: [],
+        // uni-goods-nav的参数
         options: [{
           icon: 'headphones',
           text: '客服'
@@ -77,6 +85,7 @@
       this.getGoodsDetail(goodsId)
     },
     watch: {
+      // 改变购物车商品总数
       total: {
         handler(newValue) {
           const findResult = this.options.find((x) => x.text === '购物车')
@@ -84,11 +93,13 @@
             findResult.info = newValue
           }
         },
+        // 加载页面执行一次
         immediate: true
       }
     },
     methods: {
       ...mapMutations('my_cart', ['addCate']),
+      // 获取商品详情
       async getGoodsDetail(goods_id) {
         const {
           data: res
@@ -100,12 +111,14 @@
           .replace(/webp/g, 'jpg')
         this.goodsDetail = res.message
       },
+      // 排列商品图片
       preview(index) {
         uni.previewImage({
           current: index,
           urls: this.goodsDetail.pics.map(url => url.pics_big)
         })
       },
+      // 跳转购物车
       onClick(e) {
         if (e.content.text === '购物车') {
           uni.switchTab({
@@ -113,6 +126,7 @@
           })
         }
       },
+      // 加入购物车和跳转购物车
       buttonClick(e) {
         if (e.content.text === '加入购物车') {
           const goods = {
@@ -126,6 +140,11 @@
           this.addCate(goods)
           this.options[2].info++
         }
+        if (e.content.text === '立即购买') {
+          uni.switchTab({
+            url: '/pages/cart/cart'
+          })
+        }
       }
     }
   }
@@ -133,6 +152,8 @@
 
 <style lang="scss">
   .goods-detail-container {
+
+    // 商品轮播图
     .goods-swiper {
       height: 750rpx;
 
@@ -142,15 +163,18 @@
       }
     }
 
+    // 商品描述
     .goods-description {
       padding: 10px;
       padding-right: 0;
 
+      // 商品价格
       .goods-price {
         font-size: 18px;
         color: #c00000;
       }
 
+      // 商品主体
       .goods-title-body {
         display: flex;
         font-size: 12px;

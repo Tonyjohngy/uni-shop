@@ -1,4 +1,5 @@
 <template>
+  <!-- 登录组件 -->
   <view class="login-box">
     <view class="login-logo">
       <uni-icons type="contact-filled" size="100px" color="#AFAFAF"></uni-icons>
@@ -27,11 +28,13 @@
     },
     methods: {
       ...mapMutations('my_user', ['updateUserInfo', 'updateToken', 'UpdateRedirect']),
+      // 获取登录凭证
       getUserInfo(e) {
+        // 只支持2.27.1以下版本
         uni.getUserProfile({
           desc: '请求授权', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
           success: (res) => {
-            console.log('获取用户信息成功', res.userInfo);
+            console.log('获取用户信息成功', res);
             // 在这里处理获取到的用户信息
             this.updateUserInfo(res.userInfo);
             this.getToken(res)
@@ -41,6 +44,7 @@
           }
         });
       },
+      // 获取token
       async getToken(info) {
         const [err, res] = await uni.login().catch(err => err)
 
@@ -59,30 +63,27 @@
         console.log(loginRes);
 
 
-        // 换取 token
-        // const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query)
-        // if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！')
-        // uni.$showMsg('登录成功')
-
-
         // 由于接口限制报404错误不能使用 自动生成或者写死token
         // if (loginRes.status !== 200) return uni.$showMsg('登陆失败！')
-        //预设随机字符串
-        // let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz23456789'
-        // const msg = loginRes.msg || {}
-        // if (loginRes.meta.status === 400) {
-        //   // 模拟token
-        //   for (let i = 1; i < chars.length; i++) {
-        //     const n = chars.charAt(Math.floor(Math.random() * chars.length))
-        //     msg.token += n
-        //   }
-        // }
-        // this.updateToken(msg.token.replace('undefined', 'Bearer'))
-        this.updateToken(
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIzLCJpYXQiOjE1NjQ3MzAwNzksImV4cCI6MTAwMTU2NDczMDA3OH0.YPt-XeLnjV-_1ITaXGY2FhxmCe4NvXuRnRB8OMCfnPo'
-        )
+        uni.$showMsg('登录成功')
+
+        // 预设随机字符串
+        let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz23456789'
+        const msg = loginRes.msg || {}
+        if (loginRes.meta.status === 400) {
+          // 模拟token
+          for (let i = 1; i < chars.length; i++) {
+            const n = chars.charAt(Math.floor(Math.random() * chars.length))
+            msg.token += n
+          }
+        }
+        this.updateToken(msg.token.replace('undefined', 'Bearer'))
+        // this.updateToken(
+        //   'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIzLCJpYXQiOjE1NjQ3MzAwNzksImV4cCI6MTAwMTU2NDczMDA3OH0.YPt-XeLnjV-_1ITaXGY2FhxmCe4NvXuRnRB8OMCfnPo'
+        // )
         this.switchBack()
       },
+      // 登录完后跳转回原来的页面
       switchBack() {
         if (this.redirectInfo && this.redirectInfo.openType === 'switchTab') {
           uni.switchTab({
@@ -93,6 +94,20 @@
           })
         }
       },
+      // getLoginMethods() {
+      //   uni.login({
+      //     timeout: 6000,
+      //     success: (res) => {
+      //       console.log('success:login方法返回的值：', res)
+      //     },
+      //     fail(err) {
+      //       console.log('fail:login方法返回错误：', err)
+      //     },
+      //     complete(val) {
+      //       console.log('complete:login方法完成后返回值', val)
+      //     }
+      //   })
+      // }
     }
   }
 </script>

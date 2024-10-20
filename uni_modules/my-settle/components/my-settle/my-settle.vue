@@ -1,5 +1,6 @@
 <template>
   <view class="settle-box">
+    <!-- 结算组件 -->
     <view class="settle-left">
       <label @click="changeClicked">
         <radio color="#c00000" :checked="isAllChecked"></radio>
@@ -7,6 +8,7 @@
       <text>全选</text>
     </view>
     <view class="settle-mid">合计：<text>￥{{totalPrice}}</text></view>
+    <!-- 弹出支付二维码组件 -->
     <my-modal :visible="modalVisible" title="微信支付" :qrCodeImageUrl="qrCodeImageUrl" @close="closeModal"></my-modal>
     <view class="settle-right" @click="settlement">
       结算({{totalRadio}})
@@ -44,15 +46,18 @@
     methods: {
       ...mapMutations('my_cart', ['allChecked']),
       ...mapMutations('my_user', ['updateUserInfo', 'updateToken', 'UpdateRedirect']),
+      // 改变全选商品
       changeClicked() {
         this.allChecked(!this.isAllChecked)
       },
+      // 结算前的校验
       settlement() {
         if (!this.totalRadio) return uni.$showMsg('请勾选商品！')
-        if (!this.address) return uni.$showMsg('请选择收货地址！')
+        if (this.address === '{}') return uni.$showMsg('请选择收货地址！')
         if (!this.token) return this.delayNavigate()
         this.payOrder()
       },
+      // 结算账单
       async payOrder() {
         const orderInfo = {
           order_price: 0.1,
@@ -63,22 +68,28 @@
             goods_price: x.goods_price
           }))
         }
-
         this.showModal()
       },
-      async showModal() {
-        await uni.request({
-          url: 'http://localhost:8080/orderservice/pay-log/createNative', // 使用绝对路径
-          method: 'GET',
-          success: (res) => {
-            this.qrCodeImageUrl = 'data:image/png;base64,' + res.data;
-            console.log(this.qrCodeImageUrl);
-            this.modalVisible = true;
-          },
-          fail: (err) => {
-            console.error(err);
-          }
-        })
+      // 弹出二维码
+      showModal() {
+        this.qrCodeImageUrl =
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWAQAAAAAUekxPAAAA5UlEQVR42u3Wuw7DMAgFUDZ+mQ02fpmhEgWiJlG6xXdq41qRdSrFLg+rlF/jRY/9vBkRe7DPAmBeMzh0Fgizer+b8CxAlqYJtBB1R1nPkmtc7trkqMc1bzct59x16Etd3bXOTlCF9HzmFWMTUSMRqm8ARl0+Iryde9mCM6Si6fMEmHpv0124x2DFrPrPMyoAHgqxZg5iO+pqwbp+qmeyw+oIqxEalXU2BdjUeFRUazeETev1lbO19bJtd6z1HnuOlsz4c0MEg8w65Z4wm6rUcw0tWE5yegdDWP9464+GOsCe/zT/ZW/nH5kFc1hE4wAAAABJRU5ErkJggg=='
+        this.modalVisible = true
+
+        // 接口无法在手机上使用 方便手机展示 把二维码写死
+        // async showModal() {
+        //   await uni.request({
+        //     url: 'http://localhost:8080/orderservice/pay-log/createNative', // 使用绝对路径
+        //     method: 'GET',
+        //     success: (res) => {
+        //       // this.qrCodeImageUrl = 'data:image/png;base64,' + res.data; 
+        //       console.log(this.qrCodeImageUrl)
+        //       this.modalVisible = true
+        //     },
+        //     fail: (err) => {
+        //       console.error(err);
+        //     }
+        //   })
 
 
         // 由于素材的api出现问题所以以二维码图片来处理，以下是有api的正常方法
@@ -112,6 +123,7 @@
         //    })
 
       },
+      // 关闭二维码
       closeModal() {
         this.modalVisible = false
         uni.showToast({
@@ -119,6 +131,7 @@
           icon: 'success'
         })
       },
+      // 如果没有登陆,3秒后跳转到登录页
       delayNavigate() {
         this.second = 3
         this.showTip(this.second)
@@ -139,6 +152,7 @@
           this.showTip(this.second)
         }, 1000)
       },
+      // 提示跳转秒数
       showTip(n) {
         uni.showToast({
           icon: null,
@@ -153,8 +167,9 @@
   }
 </script>
 <style lang="scss">
+  // 结算组件样式
   .settle-box {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
     height: 50px;
@@ -164,13 +179,14 @@
     justify-content: space-between;
     font-size: 18px;
 
-
+    // 左侧样式
     .settle-left {
       display: flex;
       align-items: center;
       padding-left: 5px;
     }
 
+    // 中间样式
     .settle-mid {
       min-width: 100px;
 
@@ -179,6 +195,7 @@
       }
     }
 
+    // 右侧样式
     .settle-right {
       // height: 100%;
       height: 50px;

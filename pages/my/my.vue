@@ -1,6 +1,8 @@
 <template>
   <view class="my-container">
+    <!-- 没有token就显示登录页面 -->
     <my-login v-if="!token"></my-login>
+    <!-- 有token就显示个人信息页面 -->
     <my-userInfo v-else></my-userInfo>
   </view>
 </template>

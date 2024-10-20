@@ -1,4 +1,5 @@
 <template>
+  <!-- 二维码组件 -->
   <view v-if="visible" class="custom-modal">
     <view class="modal-content">
       <view class="modal-header">
@@ -17,20 +18,24 @@
 <script>
   export default {
     props: {
+      // 二维码标题
       title: {
         type: String,
         default: '提示'
       },
+      // 二维码值
       qrCodeImageUrl: {
         type: String,
         required: true
       },
+      // 控制显示和隐藏
       visible: {
         type: Boolean,
         default: false
       }
     },
     methods: {
+      // 向父组件传递关闭
       closeModal() {
         this.$emit('close');
       }
@@ -76,6 +81,7 @@
     text-align: center;
   }
 
+  // 二维码图片式
   .qr-code-image {
     width: 100%;
     max-width: 200px;
@@ -87,6 +93,7 @@
     border-top: 1px solid #e5e5e5;
   }
 
+  // 按键样式
   button {
     background-color: #c00000;
     color: #fff;

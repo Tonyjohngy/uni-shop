@@ -1,4 +1,5 @@
 <template>
+  <!-- 商品item组件 -->
   <view class="cart-item">
     <view class="cart-item-left">
       <radio></radio>
@@ -31,6 +32,7 @@
     display: flex;
     padding: 10px 4px;
 
+    // 商品左侧
     .cart-item-left {
       display: flex;
       align-items: center;
@@ -41,6 +43,7 @@
       }
     }
 
+    // 商品右侧
     .cart-item-right {
       padding-left: 5px;
       display: flex;

@@ -20,6 +20,10 @@ export default {
     saveAddress(state) {
       uni.setStorageSync('address', JSON.stringify(state.address))
     },
+    // 移除地址方法
+    removeAddress() {
+      uni.removeStorageSync('address')
+    },
     // 更新用户信息
     updateUserInfo(state, userInfo) {
       state.userInfo = userInfo

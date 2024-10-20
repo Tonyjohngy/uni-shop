@@ -1,4 +1,5 @@
 <template>
+  <!-- 商品列表 -->
   <view>
     <view class="goods-container">
       <block v-for="(item,index) in goodsList" :key="index">
@@ -42,11 +43,13 @@
           data: res
         } = await uni.$http.get('/api/public/v1/goods/search', this.queryObj)
         if (res.meta.status !== 200) return uni.$showMsg()
+        //拼接商品信息
         this.goodsList = [...this.goodsList, ...res.message.goods]
         this.total = res.message.total
         cd && cd()
         this.isLoading = false
       },
+      //跳转详情页
       goToDetail(item) {
         uni.navigateTo({
           url: `/subpkg/goods_detail/goods_detail?goods_id=${item.goods_id}`,
@@ -60,6 +63,7 @@
       this.queryObj.pageNum += 1
       this.getGoodsList()
     },
+    //上拉刷新
     onPullDownRefresh() {
       this.queryObj.pageNum = 1
       this.isLoading = false

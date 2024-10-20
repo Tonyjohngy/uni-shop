@@ -1,16 +1,19 @@
 <template>
   <view>
+    <!-- 搜索框 -->
     <view class="search-container">
       <uni-search-bar :inverted="true" @input="input" :radius="100" :cancel-button="none" placeholder="请输入搜索内容"
         maxlength="200px">
       </uni-search-bar>
     </view>
+    <!-- 提示列表 -->
     <view class="sugg-list" v-if="keyword.length !== 0">
       <view class="sugg-item" v-for="(item,index) in searchResults" :key="index" @click="goToList(item)">
         <view class="sugg-name">{{ item.goods_name }}</view>
         <uni-icons type="right" size="16px"></uni-icons>
       </view>
     </view>
+    <!-- 搜索历史 -->
     <view class="search-history-container" v-else>
       <view class="history-title">
         <text>搜索历史</text>
@@ -40,10 +43,12 @@
       }
     },
     onLoad() {
+      // 获取历史记录
       this.historyList = JSON.parse(uni.getStorageSync('kw') || '[]')
     },
     methods: {
       // 获取输入数据，并做防抖操作
+      // setTimeout实现防抖，减轻后端压力，优化性能
       input(e) {
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
@@ -74,12 +79,14 @@
         });
       },
       // 新的搜索词加入记录列表
+      // 使用Set保存保证无需不重复，再逐一保存到数组结构，好排序
       getHistoryList() {
         // this.historyList.push(this.keyword)
         const set = new Set(this.historyList)
         set.delete(this.keyword)
         set.add(this.keyword)
         this.historyList = Array.from(set)
+        // 保存到localStorage
         uni.setStorageSync('kw', JSON.stringify(this.historyList))
       },
       // 清除历史记录
@@ -87,6 +94,7 @@
         this.historyList = []
         uni.setStorageSync('kw', '[]')
       },
+      // 跳转商品列表
       goToTag(item) {
         uni.navigateTo({
           url: `/subpkg/goods_list/goods_list?query=${item}`
@@ -103,12 +111,14 @@
 </script>
 
 <style lang="scss">
+  // 搜索样式
   .search-container {
     position: sticky;
     top: 0;
     z-index: 999;
   }
 
+  // 建议列表
   .sugg-list {
     padding: 0 5px;
 
@@ -128,9 +138,11 @@
     }
   }
 
+  // 历史记录样式
   .search-history-container {
     padding: 0 5px;
 
+    // 历史记录标题
     .history-title {
       display: flex;
       justify-content: space-between;
@@ -140,6 +152,7 @@
       border-bottom: 1px solid #efefef;
     }
 
+    // 历史记录列表
     .history-list {
       display: flex;
       flex-wrap: wrap;

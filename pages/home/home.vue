@@ -1,11 +1,13 @@
 <template>
   <view>
-    <!-- <my-search :bgc="'black'"></my-search> -->
     <!-- 搜索组件 -->
     <view class="search-box">
       <my-search @click="goToSearch()"></my-search>
     </view>
     <!-- 轮播图模块 -->
+    <!-- swiper -> swiper-item 
+      indicator-dots 小圆点 autoplay 自动播放 interval 间隔时间（单位毫秒） duration 滑动动画时间 circular 是否循环
+    -->
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" circular="true">
       <swiper-item v-for="(item,index) in swiperList" :key="index">
         <navigator :url="`/subpkg/goods_detail/goods_detail?id=${item.goods_id}`" class="swiper-item">
@@ -14,6 +16,7 @@
       </swiper-item>
     </swiper>
     <!-- 导航模块 -->
+    <!-- view => div -->
     <view class="nav-list">
       <view class="nav-item" v-for="(item ,index) in navList" :key="index" @click="navClickHandler(item)">
         <image class="nav-img" :src="item.image_src" />
@@ -59,6 +62,7 @@
         floorLsit: [],
       };
     },
+    //  onLoad => created/setup
     onLoad() {
       // 获取轮播图的数据列表
       this.getSwiperList()
@@ -69,6 +73,7 @@
     },
     methods: {
       // 获取轮播图的数据列表的方法
+      // uni.$http.get get请求
       async getSwiperList() {
         const {
           data: res
@@ -77,6 +82,7 @@
         this.swiperList = res.message
       },
       // 获取导航列表
+      // uni.$showMsg() 展示信息
       async getNavList() {
         const {
           data: res
@@ -85,6 +91,7 @@
         this.navList = res.message
       },
       // 分类导航跳转
+      // uni.switchTab  切换到指定的 TabBar 页面
       navClickHandler(item) {
         if (item.name === '分类') {
           uni.switchTab({
@@ -106,7 +113,8 @@
         })
         this.floorLsit = res.message
       },
-      // 搜索组件跳转
+      // 搜索组件跳转  
+      // uni.navigateTo 跳转任意页面
       goToSearch() {
         uni.navigateTo({
           url: '/subpkg/search/search'

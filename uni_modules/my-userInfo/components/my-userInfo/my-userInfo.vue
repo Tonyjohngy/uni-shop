@@ -1,10 +1,11 @@
 <template>
   <view class="userInfo-box">
+    <!-- 用户头像 -->
     <view class="userInfo-top">
       <image :src="userInfo.avatarUrl" class="user-avatar"></image>
       <text>{{userInfo.nickName}}</text>
     </view>
-
+    <!--收藏模块 -->
     <view class="panel-list">
       <view class="panel1">
         <view class="panel-body">
@@ -26,7 +27,7 @@
           </view>
         </view>
       </view>
-
+      <!-- 订单模块 -->
       <view class="panel2">
         <view class="panel-title">
           <text>我的订单</text>
@@ -50,20 +51,20 @@
           </view>
         </view>
       </view>
-
+      <!-- 收货模块 -->
       <view class="panel3">
         <view class="panel-body">
           <view class="panel-item">
             <text>收货地址</text>
-            <uni-icons type="right" size="15px"></uni-icons>
+            <uni-icons type="right" size="30rpx"></uni-icons>
           </view>
           <view class="panel-item">
             <text>联系客服</text>
-            <uni-icons type="right" size="15px"></uni-icons>
+            <uni-icons type="right" size="30rpx"></uni-icons>
           </view>
           <view class="panel-item" @click="logout">
             <text>退出登录</text>
-            <uni-icons type="right" size="15px"></uni-icons>
+            <uni-icons type="right" size="30rpx"></uni-icons>
           </view>
         </view>
       </view>
@@ -83,7 +84,8 @@
       ...mapState('my_user', ['userInfo', 'address', 'token']),
     },
     methods: {
-      ...mapMutations('my_user', ['updateAddress', 'updateUserInfo', 'updateToken']),
+      ...mapMutations('my_user', ['updateAddress', 'updateUserInfo', 'updateToken', 'removeAddress']),
+      // 退出登录
       async logout() {
         const [err, succ] = await uni.showModal({
           title: '提示',
@@ -92,6 +94,7 @@
 
         if (succ && succ.confirm) {
           this.updateAddress('{}')
+          this.removeAddress()
           this.updateUserInfo('{}')
           this.updateToken('')
         }
@@ -106,8 +109,9 @@
 <style lang="scss">
   .userInfo-box {
     background-color: #f4f4f4;
-    height: 555px;
+    height: 100vh;
 
+    // 用户模块
     .userInfo-top {
       width: 100%;
       height: 400rpx;
@@ -116,35 +120,37 @@
       flex-direction: column;
       align-items: center;
 
+      // 用户头像
       .user-avatar {
-        margin-top: 40px;
+        margin-top: 40rpx;
         display: block;
-        width: 90px;
-        height: 90px;
-        border-radius: 45px;
-        border: 2px solid white;
-        box-shadow: 0 1px 5px black;
+        width: 180rpx;
+        height: 180rpx;
+        border-radius: 90rpx;
+        border: 4rpx solid white;
+        box-shadow: 0 2rpx 10rpx black;
       }
 
       text {
-        margin-top: 5px;
-        font-size: 18px;
+        margin-top: 10rpx;
+        font-size: 36rpx;
         color: #fff;
       }
     }
 
+    // 收藏模块
     .panel-list {
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      top: -10px;
+      top: -20rpx;
 
       .panel1 {
-        height: 50px;
+        height: 100rpx;
         width: 80%;
         background-color: #fff;
-        border-radius: 3px;
+        border-radius: 6rpx;
 
         .panel-body {
           display: flex;
@@ -154,29 +160,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 12px;
-            padding: 10px 0;
+            font-size: 24rpx;
+            padding: 20rpx 0;
           }
         }
       }
 
+      // 订单模块
       .panel2 {
-        margin-top: 5px;
-        height: 100px;
+        margin-top: 10rpx;
+        height: 200rpx;
         width: 80%;
         background-color: #fff;
-        border-radius: 3px;
+        border-radius: 6rpx;
 
         .panel-title {
           width: 100%;
-          height: 30px;
-          line-height: 30px;
-          font-size: 12px;
-          border-bottom: 1px solid #efefef;
-          margin-bottom: 10px;
+          height: 60rpx;
+          line-height: 60rpx;
+          font-size: 24rpx;
+          border-bottom: 2rpx solid #efefef;
+          margin-bottom: 20rpx;
 
           text {
-            margin-left: 5px;
+            margin-left: 20rpx;
           }
         }
 
@@ -184,7 +191,7 @@
           display: flex;
           justify-content: space-around;
           align-items: center;
-          font-size: 15px;
+          font-size: 30rpx;
 
           .panel-item {
             display: flex;
@@ -193,22 +200,23 @@
             align-items: center;
 
             image {
-              width: 30px;
-              height: 30px;
+              width: 60rpx;
+              height: 60rpx;
             }
 
             text {
-              font-size: 12px;
+              font-size: 24rpx;
             }
           }
         }
       }
 
+      // 收货模块
       .panel3 {
-        margin-top: 5px;
+        margin-top: 20rpx;
         background-color: #fff;
         width: 80%;
-        border-radius: 3px;
+        border-radius: 12rpx;
 
         .panel-body {
           display: flex;
@@ -219,10 +227,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 5px;
+            padding: 20rpx 15rpx;
 
             text {
-              font-size: 12px;
+              font-size: 24rpx;
             }
           }
         }

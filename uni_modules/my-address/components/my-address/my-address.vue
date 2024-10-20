@@ -1,9 +1,11 @@
 <template>
+  <!-- 地址组件 -->
   <view class="address-box">
+    <!-- 显示输入地址按钮 -->
     <view class="address-button-box" v-if="JSON.stringify(address) === '{}'">
       <button type="primary" size="mini" @click="chooseAddress">请输入收货地址+</button>
     </view>
-
+    <!-- 已添加地址显示位置和收货人等信息 -->
     <view class="address-info-box" v-else @click="chooseAddress">
       <view class="row1">
         <view class="row1-left">收货人：{{ address.userName }}</view>
@@ -16,7 +18,7 @@
         <view class="row2-left">收货地址：{{ addressStr }}</view>
       </view>
     </view>
-
+    <!-- 分界线 -->
     <image src="/static/uploads/cart_border@2x.png" class="address-bottom"></image>
   </view>
 </template>
@@ -37,9 +39,9 @@
     },
     methods: {
       ...mapMutations('my_user', ['updateAddress']),
+      // 选择地址和更新地址
       async chooseAddress() {
         const [err, succ] = await uni.chooseAddress().catch(err => err)
-
         if (err === null && succ.errMsg === 'chooseAddress:ok') {
           this.updateAddress(succ)
         }
@@ -49,6 +51,8 @@
 </script>
 <style lang="scss">
   .address-box {
+
+    // 地址按钮样式
     .address-button-box {
       height: 100px;
       display: flex;
@@ -58,6 +62,7 @@
       button {}
     }
 
+    // 地址详情
     .address-info-box {
       height: 100px;
       display: flex;
@@ -75,6 +80,7 @@
       }
     }
 
+    // 地址底部分界线
     .address-bottom {
       width: 100%;
       height: 5px;

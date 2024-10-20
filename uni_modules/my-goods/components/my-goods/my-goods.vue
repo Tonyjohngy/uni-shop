@@ -20,14 +20,17 @@
 <script>
   export default {
     props: {
+      // 商品对象
       item: {
         type: Object,
         default: {}
       },
+      // 是否选中
       showRadio: {
         type: Boolean,
         default: false
       },
+      // 商品数目
       showNumBox: {
         type: Boolean,
         default: false
@@ -41,22 +44,23 @@
       }
     },
     methods: {
-
+      // 改变选择状态
       handlerChangeRadio() {
         this.$emit('change-radio', {
           goods_id: this.item.goods_id,
           goods_state: !this.item.goods_state,
         })
       },
+      // 改变商品数目
       handlerChangeNum(val) {
         this.$emit('change-num', {
           goods_id: this.item.goods_id,
           goods_count: +val
         })
       },
-
     },
     computed: {
+      // 修改价格格式
       fixedPrice() {
         return Number(this.item.goods_price).toFixed(2)
       }
